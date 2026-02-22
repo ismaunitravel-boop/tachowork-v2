@@ -1,6 +1,6 @@
 /* ===========================
    TACHOWORK v2 - Concept A: Modern Glass
-   Dark/Light Theme Support
+   Full Dark/Light Theme Support
    =========================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -39,7 +39,6 @@
   --gradient-1: linear-gradient(135deg, #6c5ce7, #a29bfe);
   --gradient-2: linear-gradient(135deg, #00cec9, #81ecec);
   --gradient-3: linear-gradient(135deg, #fd79a8, #e84393);
-  --gradient-sidebar: linear-gradient(180deg, #12141d 0%, #161820 100%);
   --shadow: 0 2px 8px rgba(0,0,0,0.3);
   --shadow-md: 0 8px 24px rgba(0,0,0,0.4);
   --shadow-glow: 0 4px 20px var(--primary-glow);
@@ -47,12 +46,6 @@
   --table-row-hover: rgba(255,255,255,0.02);
   --modal-bg: #1e2030;
   --scrollbar-thumb: rgba(255,255,255,0.1);
-  --sidebar-item-active-bg: rgba(108,92,231,0.15);
-  --sidebar-item-active-color: #a29bfe;
-  --sidebar-item-hover: rgba(255,255,255,0.06);
-  --sidebar-text: rgba(255,255,255,0.45);
-  --sidebar-section-text: rgba(255,255,255,0.2);
-  --sidebar-border: rgba(255,255,255,0.06);
   --notif-success-bg: rgba(0,184,148,0.15);
   --notif-success-border: rgba(0,184,148,0.25);
   --notif-success-text: #00b894;
@@ -63,9 +56,23 @@
   --badge-fijo-text: #60a5fa;
   --badge-fd-bg: rgba(253,203,110,0.15);
   --badge-fd-text: #fdcb6e;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --transition: 0.2s ease;
+
+  /* Sidebar - dark */
+  --sidebar-bg: linear-gradient(180deg, #12141d 0%, #161820 100%);
+  --sidebar-glow: rgba(108,92,231,0.06);
+  --sidebar-border: rgba(255,255,255,0.06);
+  --sidebar-text: rgba(255,255,255,0.45);
+  --sidebar-text-hover: rgba(255,255,255,0.8);
+  --sidebar-section-text: rgba(255,255,255,0.2);
+  --sidebar-item-hover: rgba(255,255,255,0.06);
+  --sidebar-item-active-bg: rgba(108,92,231,0.15);
+  --sidebar-item-active-text: #a29bfe;
+  --sidebar-logo-sub: rgba(255,255,255,0.35);
+
+  /* Toggle button */
+  --toggle-bg: #1a1c26;
+  --toggle-border: rgba(255,255,255,0.12);
+  --toggle-color: #8b8fa3;
 }
 
 /* --- Light Theme --- */
@@ -96,7 +103,6 @@
   --danger-light: rgba(232,85,85,0.08);
   --pink: #d63384;
   --pink-light: rgba(214,51,132,0.08);
-  --gradient-sidebar: linear-gradient(180deg, #1a1a2e 0%, #232340 100%);
   --shadow: 0 1px 4px rgba(0,0,0,0.06);
   --shadow-md: 0 8px 24px rgba(0,0,0,0.1);
   --shadow-glow: 0 4px 16px rgba(108,92,231,0.15);
@@ -104,12 +110,6 @@
   --table-row-hover: #fafafd;
   --modal-bg: #ffffff;
   --scrollbar-thumb: rgba(0,0,0,0.12);
-  --sidebar-item-active-bg: rgba(255,255,255,0.12);
-  --sidebar-item-active-color: #fff;
-  --sidebar-item-hover: rgba(255,255,255,0.07);
-  --sidebar-text: rgba(255,255,255,0.5);
-  --sidebar-section-text: rgba(255,255,255,0.25);
-  --sidebar-border: rgba(255,255,255,0.06);
   --notif-success-bg: #ecfdf5;
   --notif-success-border: #a7f3d0;
   --notif-success-text: #065f46;
@@ -120,9 +120,23 @@
   --badge-fijo-text: #3b82f6;
   --badge-fd-bg: rgba(245,158,11,0.1);
   --badge-fd-text: #d97706;
-  --radius: 16px;
-  --radius-sm: 10px;
-  --transition: 0.2s ease;
+
+  /* Sidebar - light */
+  --sidebar-bg: linear-gradient(180deg, #ffffff 0%, #f8f9fc 100%);
+  --sidebar-glow: rgba(108,92,231,0.04);
+  --sidebar-border: rgba(0,0,0,0.08);
+  --sidebar-text: #5c5f73;
+  --sidebar-text-hover: #1a1a2e;
+  --sidebar-section-text: #8b8fa3;
+  --sidebar-item-hover: rgba(108,92,231,0.06);
+  --sidebar-item-active-bg: rgba(108,92,231,0.1);
+  --sidebar-item-active-text: #6c5ce7;
+  --sidebar-logo-sub: #8b8fa3;
+
+  /* Toggle button */
+  --toggle-bg: #ffffff;
+  --toggle-border: rgba(0,0,0,0.12);
+  --toggle-color: #5c5f73;
 }
 
 html, body, #root {
@@ -132,7 +146,6 @@ html, body, #root {
   color: var(--text);
   background: var(--bg);
   overflow: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ========================
@@ -151,7 +164,6 @@ html, body, #root {
   overflow: hidden;
   min-width: 0;
   background: var(--bg);
-  transition: background-color 0.3s ease;
 }
 
 /* ========================
@@ -159,11 +171,11 @@ html, body, #root {
    ======================== */
 .sidebar {
   width: 240px;
-  background: var(--gradient-sidebar);
+  background: var(--sidebar-bg);
   border-right: 1px solid var(--sidebar-border);
   display: flex;
   flex-direction: column;
-  transition: width 0.25s ease, background 0.3s ease;
+  transition: width 0.25s ease;
   overflow: hidden;
   flex-shrink: 0;
   position: relative;
@@ -176,7 +188,7 @@ html, body, #root {
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(ellipse at 20% 20%, rgba(108,92,231,0.06) 0%, transparent 50%);
+  background: radial-gradient(ellipse at 20% 20%, var(--sidebar-glow) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -208,7 +220,7 @@ html, body, #root {
 
 .logo-sub {
   font-size: 10px;
-  color: rgba(255,255,255,0.35);
+  color: var(--sidebar-logo-sub);
   letter-spacing: 1.5px;
   margin-top: 2px;
   text-transform: uppercase;
@@ -223,7 +235,7 @@ html, body, #root {
   background-clip: text;
 }
 
-/* Sidebar Toggle */
+/* Sidebar Toggle Button */
 .sidebar-toggle {
   position: absolute;
   top: 22px;
@@ -231,15 +243,16 @@ html, body, #root {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--bg-card-solid);
+  border: 1px solid var(--toggle-border);
+  background: var(--toggle-bg);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
-  color: var(--text-secondary);
+  color: var(--toggle-color);
   transition: all 0.2s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
 .sidebar-toggle:hover {
@@ -292,12 +305,12 @@ html, body, #root {
 
 .sidebar-item:hover {
   background: var(--sidebar-item-hover);
-  color: rgba(255,255,255,0.8);
+  color: var(--sidebar-text-hover);
 }
 
 .sidebar-item.active {
   background: var(--sidebar-item-active-bg);
-  color: var(--sidebar-item-active-color);
+  color: var(--sidebar-item-active-text);
   font-weight: 600;
 }
 
@@ -370,7 +383,6 @@ html, body, #root {
   background: var(--bg-card-solid);
   flex-shrink: 0;
   position: relative;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .header-left {
@@ -746,7 +758,7 @@ html, body, #root {
   border-radius: 8px;
 }
 
-/* Filter buttons */
+/* Filter pill buttons */
 .btn-filter {
   display: inline-flex;
   align-items: center;
