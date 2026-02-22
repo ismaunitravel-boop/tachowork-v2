@@ -82,13 +82,13 @@ export default function Trabajadores() {
 
           <div className="trab-filters">
             <button
-              className={`btn btn-sm ${!showInactivos ? 'btn-primary' : 'btn-secondary'}`}
+              className={`btn-filter ${!showInactivos ? 'active' : ''}`}
               onClick={() => setShowInactivos(false)}
             >
               <UserCheck size={14} /> Activos ({activos.length})
             </button>
             <button
-              className={`btn btn-sm ${showInactivos ? 'btn-primary' : 'btn-secondary'}`}
+              className={`btn-filter ${showInactivos ? 'active' : ''}`}
               onClick={() => setShowInactivos(true)}
             >
               <UserX size={14} /> Inactivos ({inactivos.length})
@@ -126,10 +126,7 @@ export default function Trabajadores() {
                     <td className="trab-numero">{w.numero || '—'}</td>
                     <td className="trab-name">{w.nombre}</td>
                     <td>
-                      <span
-                        className="trab-badge"
-                        style={{ background: WORKER_TYPES[w.tipo]?.color || '#94a3b8' }}
-                      >
+                      <span className={`trab-badge ${w.tipo === 'fijo' ? 'trab-badge-fijo' : 'trab-badge-fd'}`}>
                         {WORKER_TYPES[w.tipo]?.label || w.tipo}
                       </span>
                     </td>

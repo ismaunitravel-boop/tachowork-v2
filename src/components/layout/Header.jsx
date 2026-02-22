@@ -1,9 +1,8 @@
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight, RefreshCw } from 'lucide-react';
+import { ChevronLeft, ChevronRight, RefreshCw, Sun, Moon } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
 export default function Header({ title, year, onYearChange }) {
-  const { loading } = useApp();
+  const { loading, theme, toggleTheme } = useApp();
 
   return (
     <header className="header">
@@ -27,6 +26,13 @@ export default function Header({ title, year, onYearChange }) {
 
       <div className="header-right">
         {loading && <RefreshCw size={16} className="spin" />}
+        <button
+          className="theme-toggle"
+          onClick={toggleTheme}
+          title={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+        >
+          {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+        </button>
       </div>
     </header>
   );

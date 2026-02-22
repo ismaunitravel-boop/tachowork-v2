@@ -15,8 +15,8 @@ export default function Dashboard() {
         ) : (
           <div className="dashboard-cards">
             <div className="dash-card">
-              <div className="dash-card-icon" style={{ background: '#3b82f6' }}>
-                <Users size={24} color="#fff" />
+              <div className="dash-card-icon dash-icon-purple">
+                <Users size={24} />
               </div>
               <div className="dash-card-info">
                 <span className="dash-card-value">{activos.length}</span>
@@ -25,8 +25,8 @@ export default function Dashboard() {
             </div>
 
             <div className="dash-card">
-              <div className="dash-card-icon" style={{ background: apiConnected ? '#10b981' : '#ef4444' }}>
-                {apiConnected ? <Wifi size={24} color="#fff" /> : <WifiOff size={24} color="#fff" />}
+              <div className="dash-card-icon dash-icon-green">
+                {apiConnected ? <Wifi size={24} /> : <WifiOff size={24} />}
               </div>
               <div className="dash-card-info">
                 <span className="dash-card-value">{apiConnected ? 'Online' : 'Offline'}</span>
@@ -35,8 +35,8 @@ export default function Dashboard() {
             </div>
 
             <div className="dash-card">
-              <div className="dash-card-icon" style={{ background: '#8b5cf6' }}>
-                <Calendar size={24} color="#fff" />
+              <div className="dash-card-icon dash-icon-pink">
+                <Calendar size={24} />
               </div>
               <div className="dash-card-info">
                 <span className="dash-card-value">{new Date().getFullYear()}</span>
