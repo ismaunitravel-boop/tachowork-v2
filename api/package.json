@@ -1,0 +1,12 @@
+{
+  "name": "control-laboral-api",
+  "version": "1.0.0",
+  "description": "API de Control Laboral - Azure Functions v3",
+  "scripts": {
+    "start": "func start",
+    "test": "echo \"No tests yet\""
+  },
+  "dependencies": {
+    "mssql": "^10.0.0"
+  }
+}

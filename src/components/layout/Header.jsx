@@ -1,0 +1,33 @@
+import { useState } from 'react';
+import { ChevronLeft, ChevronRight, RefreshCw } from 'lucide-react';
+import { useApp } from '../../context/AppContext';
+
+export default function Header({ title, year, onYearChange }) {
+  const { loading } = useApp();
+
+  return (
+    <header className="header">
+      <div className="header-left">
+        <h1 className="header-title">{title}</h1>
+      </div>
+
+      {onYearChange && (
+        <div className="header-center">
+          <div className="year-selector">
+            <button className="year-btn" onClick={() => onYearChange(year - 1)}>
+              <ChevronLeft size={18} />
+            </button>
+            <span className="year-label">{year}</span>
+            <button className="year-btn" onClick={() => onYearChange(year + 1)}>
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="header-right">
+        {loading && <RefreshCw size={16} className="spin" />}
+      </div>
+    </header>
+  );
+}
