@@ -239,7 +239,7 @@ html, body, #root {
 .sidebar-toggle {
   position: absolute;
   top: 22px;
-  right: -12px;
+  right: 8px;
   width: 24px;
   height: 24px;
   border-radius: 50%;
