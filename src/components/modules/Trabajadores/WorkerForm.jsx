@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { WORKER_TYPES } from '../../../utils/constants';
 
 const EMPTY = {
@@ -16,19 +16,27 @@ const EMPTY = {
   activo: true,
 };
 
-export default function WorkerForm({ worker, onSave, onCancel, saving }) {
+export default function WorkerForm({ worker, onSave, onCancel, saving, onDirtyChange }) {
   const [form, setForm] = useState(EMPTY);
+  const initialRef = useRef(null);
 
   useEffect(() => {
-    if (worker) {
-      setForm({ ...EMPTY, ...worker });
-    } else {
-      setForm(EMPTY);
-    }
+    const initial = worker ? { ...EMPTY, ...worker } : { ...EMPTY };
+    setForm(initial);
+    initialRef.current = JSON.stringify(initial);
+    if (onDirtyChange) onDirtyChange(false);
   }, [worker]);
 
   const handleChange = (field, value) => {
-    setForm(prev => ({ ...prev, [field]: value }));
+    setForm(prev => {
+      const next = { ...prev, [field]: value };
+      // Check dirty
+      if (onDirtyChange) {
+        const isDirty = JSON.stringify(next) !== initialRef.current;
+        onDirtyChange(isDirty);
+      }
+      return next;
+    });
   };
 
   const handleSubmit = (e) => {

@@ -331,6 +331,30 @@ html, body, #root {
   padding: 10px;
 }
 
+/* Sidebar keyboard shortcut hints */
+.sidebar-kbd {
+  margin-left: auto;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--sidebar-section-text);
+  background: rgba(255,255,255,0.04);
+  padding: 2px 5px;
+  border-radius: 4px;
+  font-family: inherit;
+  letter-spacing: 0.3px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+[data-theme="light"] .sidebar-kbd {
+  background: rgba(0,0,0,0.04);
+  color: var(--text-muted);
+}
+
+.sidebar-item:hover .sidebar-kbd {
+  opacity: 1;
+}
+
 /* Sidebar Footer */
 .sidebar-footer {
   padding: 14px 16px;
@@ -695,6 +719,44 @@ html, body, #root {
 .modal-body {
   padding: 22px;
   overflow-y: auto;
+}
+
+/* Dirty confirmation dialog */
+.modal-confirm-dirty {
+  text-align: center;
+  padding: 12px 0;
+}
+
+.modal-confirm-dirty .confirm-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--warning-light);
+  color: var(--warning);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.modal-confirm-dirty p {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.modal-confirm-dirty .confirm-sub {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.modal-confirm-dirty .confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
 /* ========================

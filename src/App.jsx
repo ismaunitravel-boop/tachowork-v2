@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Layout from './components/layout/Layout';
 import Dashboard from './components/modules/Dashboard/Dashboard';
 import Trabajadores from './components/modules/Trabajadores/Trabajadores';
 import Placeholder from './components/common/Placeholder';
+import useKeyboardNav from './hooks/useKeyboardNav';
 
 const MODULE_LABELS = {
   'dashboard': 'Dashboard',
@@ -33,9 +34,13 @@ function renderModule(id) {
 
 export default function App() {
   const [activeModule, setActiveModule] = useState('dashboard');
+  const navigate = useCallback((id) => setActiveModule(id), []);
+
+  // Alt+1..9 keyboard shortcuts
+  useKeyboardNav(navigate);
 
   return (
-    <Layout activeModule={activeModule} onNavigate={setActiveModule}>
+    <Layout activeModule={activeModule} onNavigate={navigate}>
       {renderModule(activeModule)}
     </Layout>
   );

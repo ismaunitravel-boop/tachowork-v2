@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Plus, Search, Pencil, Trash2, UserCheck, UserX } from 'lucide-react';
 import Header from '../../layout/Header';
 import Modal from '../../common/Modal';
@@ -16,7 +16,22 @@ export default function Trabajadores() {
   const [editWorker, setEditWorker] = useState(null);
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [formDirty, setFormDirty] = useState(false);
   const { notif, show, close } = useNotification();
+  const searchRef = useRef(null);
+
+  // ESC clears search when no modal is open
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === 'Escape' && !modalOpen && !confirmDelete && search) {
+        e.preventDefault();
+        setSearch('');
+        searchRef.current?.blur();
+      }
+    };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [modalOpen, confirmDelete, search]);
 
   const displayed = showInactivos ? inactivos : activos;
   const filtered = displayed.filter(w =>
@@ -25,12 +40,19 @@ export default function Trabajadores() {
 
   const handleNew = () => {
     setEditWorker(null);
+    setFormDirty(false);
     setModalOpen(true);
   };
 
   const handleEdit = (worker) => {
     setEditWorker(worker);
+    setFormDirty(false);
     setModalOpen(true);
+  };
+
+  const handleCloseForm = () => {
+    setModalOpen(false);
+    setFormDirty(false);
   };
 
   const handleSave = async (data) => {
@@ -43,6 +65,7 @@ export default function Trabajadores() {
         await createWorker(data);
         show('Trabajador creado');
       }
+      setFormDirty(false);
       setModalOpen(false);
     } catch (err) {
       show(err.message, 'error');
@@ -73,11 +96,17 @@ export default function Trabajadores() {
           <div className="trab-search">
             <Search size={16} />
             <input
+              ref={searchRef}
               type="text"
               placeholder="Buscar trabajador..."
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
+            {search && (
+              <button className="trab-search-clear" onClick={() => setSearch('')}>
+                <span>✕</span>
+              </button>
+            )}
           </div>
 
           <div className="trab-filters">
@@ -153,15 +182,17 @@ export default function Trabajadores() {
       {/* Modal crear/editar */}
       <Modal
         open={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={handleCloseForm}
         title={editWorker?.id ? 'Editar trabajador' : 'Nuevo trabajador'}
         width={520}
+        dirty={formDirty}
       >
         <WorkerForm
           worker={editWorker}
           onSave={handleSave}
-          onCancel={() => setModalOpen(false)}
+          onCancel={handleCloseForm}
           saving={saving}
+          onDirtyChange={setFormDirty}
         />
       </Modal>
 
@@ -172,17 +203,19 @@ export default function Trabajadores() {
         title="Eliminar trabajador"
         width={400}
       >
-        <p style={{ marginBottom: 16 }}>
-          ¿Seguro que quieres eliminar a <strong>{confirmDelete?.nombre}</strong>?
-          Esta acción no se puede deshacer.
-        </p>
-        <div className="form-actions">
-          <button className="btn btn-secondary" onClick={() => setConfirmDelete(null)}>
-            Cancelar
-          </button>
-          <button className="btn btn-danger" onClick={handleDelete}>
-            Eliminar
-          </button>
+        <div className="delete-confirm">
+          <p>
+            ¿Seguro que quieres eliminar a <strong>{confirmDelete?.nombre}</strong>?
+            Esta acción no se puede deshacer.
+          </p>
+          <div className="form-actions" style={{ justifyContent: 'center', borderTop: 'none', paddingTop: 0 }}>
+            <button className="btn btn-secondary" onClick={() => setConfirmDelete(null)}>
+              Cancelar
+            </button>
+            <button className="btn btn-danger" onClick={handleDelete}>
+              Eliminar
+            </button>
+          </div>
         </div>
       </Modal>
     </>
