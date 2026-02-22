@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import Layout from './components/layout/Layout';
 import Dashboard from './components/modules/Dashboard/Dashboard';
 import Trabajadores from './components/modules/Trabajadores/Trabajadores';
+import Calendario from './components/modules/Calendario/Calendario';
 import Placeholder from './components/common/Placeholder';
 import useKeyboardNav from './hooks/useKeyboardNav';
 
@@ -28,6 +29,7 @@ function renderModule(id) {
   switch (id) {
     case 'dashboard': return <Dashboard />;
     case 'trabajadores': return <Trabajadores />;
+    case 'calendario': return <Calendario />;
     default: return <Placeholder title={MODULE_LABELS[id] || id} />;
   }
 }
