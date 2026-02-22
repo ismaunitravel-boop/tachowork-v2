@@ -13,11 +13,10 @@ export default function Sidebar({ activeModule, onNavigate }) {
       <div className="sidebar-logo" onClick={() => onNavigate('dashboard')}>
         {expanded ? (
           <>
-            <span className="logo-text">UNITRAVEL</span>
-            <span className="logo-sub">AUTOCARES</span>
+            <span className="logo-text">TachoWork</span>
           </>
         ) : (
-          <span className="logo-mini">U</span>
+          <span className="logo-mini">TW</span>
         )}
       </div>
 
