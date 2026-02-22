@@ -110,6 +110,7 @@ export default function Trabajadores() {
             <table className="trab-table">
               <thead>
                 <tr>
+                  <th>Nº</th>
                   <th>Nombre</th>
                   <th>Tipo</th>
                   <th>Días/sem</th>
@@ -122,6 +123,7 @@ export default function Trabajadores() {
               <tbody>
                 {filtered.map(w => (
                   <tr key={w.id}>
+                    <td className="trab-numero">{w.numero || '—'}</td>
                     <td className="trab-name">{w.nombre}</td>
                     <td>
                       <span

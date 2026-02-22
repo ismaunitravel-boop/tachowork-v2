@@ -29,6 +29,7 @@ export function fromAPI(w) {
 // Frontend → API mapping
 export function toAPI(w) {
   return {
+    numero: w.numero || null,
     nombre: w.nombre,
     tipo: w.tipo || 'fijo',
     fecha_inicio: w.fechaInicio || null,

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { WORKER_TYPES } from '../../../utils/constants';
 
 const EMPTY = {
+  numero: '',
   nombre: '',
   tipo: 'fijo',
   fechaInicio: '',
@@ -38,18 +39,30 @@ export default function WorkerForm({ worker, onSave, onCancel, saving }) {
 
   return (
     <form onSubmit={handleSubmit} className="worker-form">
-      {/* Nombre */}
-      <div className="form-group">
-        <label className="form-label">Nombre completo *</label>
-        <input
-          className="form-input"
-          type="text"
-          value={form.nombre}
-          onChange={e => handleChange('nombre', e.target.value)}
-          placeholder="Nombre y apellidos"
-          required
-          autoFocus
-        />
+      {/* Número + Nombre */}
+      <div className="form-row" style={{ gridTemplateColumns: '100px 1fr' }}>
+        <div className="form-group">
+          <label className="form-label">Nº Trabajador</label>
+          <input
+            className="form-input"
+            type="text"
+            value={form.numero}
+            onChange={e => handleChange('numero', e.target.value)}
+            placeholder="001"
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Nombre completo *</label>
+          <input
+            className="form-input"
+            type="text"
+            value={form.nombre}
+            onChange={e => handleChange('nombre', e.target.value)}
+            placeholder="Nombre y apellidos"
+            required
+            autoFocus
+          />
+        </div>
       </div>
 
       {/* Tipo + Activo */}

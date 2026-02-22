@@ -75,7 +75,6 @@ export const STATUS_TYPES = {
 export const WORKER_TYPES = {
   fijo: { label: 'Fijo', color: '#3b82f6' },
   'fijo-discontinuo': { label: 'Fijo Discontinuo', color: '#f59e0b' },
-  extra: { label: 'Extra', color: '#10b981' },
 };
 
 // Month names
