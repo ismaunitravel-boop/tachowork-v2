@@ -20,11 +20,11 @@ export const MENU = [
     ],
   },
   {
-    section: 'EXTRAS',
+    section: 'CONTROL DE JORNADA',
     items: [
-      { id: 'horas-extra', label: 'Horas', icon: Clock },
-      { id: 'festivos', label: 'Festivos', icon: Star },
-      { id: 'fichas', label: 'Fichas', icon: Users },
+      { id: 'guardias', label: 'Guardias', icon: Shield },
+      { id: 'descansos', label: 'Descansos', icon: Timer },
+      { id: 'cierres', label: 'Cierres', icon: CalendarCheck },
     ],
   },
   {
@@ -37,11 +37,11 @@ export const MENU = [
     ],
   },
   {
-    section: 'CONTROL DE JORNADA',
+    section: 'EXTRAS',
     items: [
-      { id: 'guardias', label: 'Guardias', icon: Shield },
-      { id: 'descansos', label: 'Descansos', icon: Timer },
-      { id: 'cierres', label: 'Cierres', icon: CalendarCheck },
+      { id: 'horas-extra', label: 'Horas', icon: Clock },
+      { id: 'festivos', label: 'Festivos', icon: Star },
+      { id: 'fichas', label: 'Fichas', icon: Users },
     ],
   },
   {
