@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Layout from './components/layout/Layout';
 import Dashboard from './components/modules/Dashboard/Dashboard';
+import Trabajadores from './components/modules/Trabajadores/Trabajadores';
 import Placeholder from './components/common/Placeholder';
 
 const MODULE_LABELS = {
@@ -25,6 +26,7 @@ const MODULE_LABELS = {
 function renderModule(id) {
   switch (id) {
     case 'dashboard': return <Dashboard />;
+    case 'trabajadores': return <Trabajadores />;
     default: return <Placeholder title={MODULE_LABELS[id] || id} />;
   }
 }
