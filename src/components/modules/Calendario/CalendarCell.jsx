@@ -52,7 +52,11 @@ export default function CalendarCell({ status, isWeekend, isSaturday, isSunday, 
     >
       <span
         className="cal-status-letter"
-        style={statusInfo ? { background: statusInfo.color } : undefined}
+        style={statusInfo ? {
+          background: statusInfo.color,
+          color: statusInfo.darkText ? '#1e293b' : '#fff',
+          fontSize: status && status.length > 1 ? '0.65rem' : '0.85rem',
+        } : undefined}
       >
         {status || ''}
       </span>
@@ -63,7 +67,11 @@ export default function CalendarCell({ status, isWeekend, isSaturday, isSunday, 
             <button
               key={key}
               className={`cal-picker-btn ${status === key ? 'active' : ''}`}
-              style={{ background: STATUS_TYPES[key].color }}
+              style={{
+                background: STATUS_TYPES[key].color,
+                color: STATUS_TYPES[key].darkText ? '#1e293b' : '#fff',
+                fontSize: key.length > 1 ? '0.55rem' : '0.7rem',
+              }}
               onClick={(e) => { e.stopPropagation(); handleSelect(key); }}
               title={STATUS_TYPES[key].label}
             >
