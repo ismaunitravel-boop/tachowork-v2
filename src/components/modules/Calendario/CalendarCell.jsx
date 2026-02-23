@@ -1,39 +1,16 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useRef, useCallback, useMemo } from 'react';
 import { useSettings } from '../../../context/SettingsContext';
 
-export default function CalendarCell({ status, isWeekend, isSaturday, isSunday, isToday, onChange }) {
-  const [showPicker, setShowPicker] = useState(false);
-  const cellRef = useRef(null);
-  const pickerRef = useRef(null);
+// Valid statuses user can type (P, B, V come from other tabs)
+const TYPEABLE = new Set(['T', 'D', 'G']);
+
+export default function CalendarCell({
+  status, isWeekend, isSaturday, isSunday, isToday,
+  onChange, workerId, fecha, colIndex, onFocus, autoAdvance,
+}) {
+  const inputRef = useRef(null);
   const { getStatusTypes } = useSettings();
   const statusTypes = useMemo(() => getStatusTypes(), [getStatusTypes]);
-  const statusKeys = useMemo(() => Object.keys(statusTypes), [statusTypes]);
-
-  // Close picker on outside click or ESC
-  useEffect(() => {
-    if (!showPicker) return;
-    const handleClick = (e) => {
-      if (pickerRef.current && !pickerRef.current.contains(e.target) &&
-          cellRef.current && !cellRef.current.contains(e.target)) {
-        setShowPicker(false);
-      }
-    };
-    const handleEsc = (e) => {
-      if (e.key === 'Escape') setShowPicker(false);
-    };
-    document.addEventListener('mousedown', handleClick);
-    document.addEventListener('keydown', handleEsc);
-    return () => {
-      document.removeEventListener('mousedown', handleClick);
-      document.removeEventListener('keydown', handleEsc);
-    };
-  }, [showPicker]);
-
-  const handleSelect = (key) => {
-    onChange(status === key ? null : key);
-    setShowPicker(false);
-  };
-
   const statusInfo = status ? statusTypes[status] : null;
 
   const classes = [
@@ -45,51 +22,131 @@ export default function CalendarCell({ status, isWeekend, isSaturday, isSunday, 
     status ? 'has-status' : '',
   ].filter(Boolean).join(' ');
 
+  // Handle keydown: arrow nav + validation
+  const handleKeyDown = useCallback((e) => {
+    // Arrow keys → navigate
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+      e.preventDefault();
+      const table = e.target.closest('table');
+      if (table) navigateFromCell(table, e.target, e.key, autoAdvance);
+      return;
+    }
+
+    // Tab → next cell
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const table = e.target.closest('table');
+      if (table) navigateFromCell(table, e.target, e.shiftKey ? 'ArrowLeft' : 'ArrowRight', autoAdvance);
+      return;
+    }
+
+    // Delete / Backspace → clear
+    if (e.key === 'Delete' || e.key === 'Backspace') {
+      e.preventDefault();
+      if (status) onChange(null);
+      return;
+    }
+
+    // Letter keys
+    const key = e.key.toUpperCase();
+    if (key.length === 1 && /[A-Z]/.test(key)) {
+      e.preventDefault();
+      if (TYPEABLE.has(key)) {
+        onChange(key === status ? null : key);
+        // Auto-advance after typing
+        if (autoAdvance) {
+          setTimeout(() => {
+            const table = e.target.closest('table');
+            if (table) navigateFromCell(table, e.target, 'ArrowRight', true);
+          }, 30);
+        }
+      }
+      return;
+    }
+  }, [status, onChange, autoAdvance]);
+
+  // Handle focus → crosshair
+  const handleFocus = useCallback((e) => {
+    if (onFocus) onFocus(colIndex, e.target);
+  }, [colIndex, onFocus]);
+
   return (
-    <td
-      ref={cellRef}
-      className={classes}
-      onClick={() => setShowPicker(!showPicker)}
-    >
-      <span
-        className="cal-status-letter"
+    <td className={classes} data-col-index={colIndex}>
+      <input
+        ref={inputRef}
+        type="text"
+        className="cal-input"
+        readOnly
+        value={status || ''}
+        data-worker={workerId}
+        data-fecha={fecha}
+        data-col-index={colIndex}
         style={statusInfo ? {
           background: statusInfo.color,
           color: statusInfo.darkText ? '#1e293b' : '#fff',
-          fontSize: status && status.length > 1 ? '0.65rem' : '0.85rem',
+          fontSize: status && status.length > 1 ? '0.65rem' : undefined,
         } : undefined}
-      >
-        {status || ''}
-      </span>
-
-      {showPicker && (
-        <div className="cal-picker" ref={pickerRef}>
-          {statusKeys.map(key => (
-            <button
-              key={key}
-              className={`cal-picker-btn ${status === key ? 'active' : ''}`}
-              style={{
-                background: statusTypes[key].color,
-                color: statusTypes[key].darkText ? '#1e293b' : '#fff',
-                fontSize: key.length > 1 ? '0.55rem' : '0.7rem',
-              }}
-              onClick={(e) => { e.stopPropagation(); handleSelect(key); }}
-              title={statusTypes[key].label}
-            >
-              {key}
-            </button>
-          ))}
-          {status && (
-            <button
-              className="cal-picker-btn cal-picker-clear"
-              onClick={(e) => { e.stopPropagation(); handleSelect(status); }}
-              title="Quitar"
-            >
-              ✕
-            </button>
-          )}
-        </div>
-      )}
+        onKeyDown={handleKeyDown}
+        onFocus={handleFocus}
+        tabIndex={0}
+      />
     </td>
   );
+}
+
+// Navigate to next editable cell, skipping locked ones
+function navigateFromCell(table, currentInput, direction) {
+  const rows = Array.from(table.querySelectorAll('tbody tr'));
+  const currentRow = currentInput.closest('tr');
+  const rowIdx = rows.indexOf(currentRow);
+  const cells = Array.from(currentRow.querySelectorAll('.cal-input'));
+  let cellIdx = cells.indexOf(currentInput);
+
+  let r = rowIdx;
+  let c = cellIdx;
+  const maxIter = rows.length * 400;
+  let iter = 0;
+
+  while (iter++ < maxIter) {
+    switch (direction) {
+      case 'ArrowRight':
+        c++;
+        if (c >= cells.length) { c = 0; r++; }
+        break;
+      case 'ArrowLeft':
+        c--;
+        if (c < 0) {
+          r--;
+          if (r >= 0) {
+            const prevCells = rows[r].querySelectorAll('.cal-input');
+            c = prevCells.length - 1;
+          }
+        }
+        break;
+      case 'ArrowDown':
+        r++;
+        break;
+      case 'ArrowUp':
+        r--;
+        break;
+    }
+
+    if (r < 0 || r >= rows.length) return;
+
+    const targetRow = rows[r];
+    const targetCells = Array.from(targetRow.querySelectorAll('.cal-input'));
+    const ci = Math.min(c, targetCells.length - 1);
+    const target = targetCells[ci];
+
+    if (target && !target.hasAttribute('data-locked')) {
+      target.focus();
+      target.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'nearest' });
+      return;
+    }
+
+    // For vertical, keep trying same direction
+    if (direction === 'ArrowUp' || direction === 'ArrowDown') {
+      c = ci;
+    }
+  }
 }
