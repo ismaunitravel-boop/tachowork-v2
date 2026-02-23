@@ -1,12 +1,13 @@
-import { useState, useRef, useEffect } from 'react';
-import { STATUS_TYPES } from '../../../utils/constants';
-
-const STATUS_KEYS = Object.keys(STATUS_TYPES);
+import { useState, useRef, useEffect, useMemo } from 'react';
+import { useSettings } from '../../../context/SettingsContext';
 
 export default function CalendarCell({ status, isWeekend, isSaturday, isSunday, isToday, onChange }) {
   const [showPicker, setShowPicker] = useState(false);
   const cellRef = useRef(null);
   const pickerRef = useRef(null);
+  const { getStatusTypes } = useSettings();
+  const statusTypes = useMemo(() => getStatusTypes(), [getStatusTypes]);
+  const statusKeys = useMemo(() => Object.keys(statusTypes), [statusTypes]);
 
   // Close picker on outside click or ESC
   useEffect(() => {
@@ -33,8 +34,8 @@ export default function CalendarCell({ status, isWeekend, isSaturday, isSunday, 
     setShowPicker(false);
   };
 
-  const statusInfo = status ? STATUS_TYPES[status] : null;
-  
+  const statusInfo = status ? statusTypes[status] : null;
+
   const classes = [
     'cal-cell',
     isWeekend ? 'weekend' : '',
@@ -63,17 +64,17 @@ export default function CalendarCell({ status, isWeekend, isSaturday, isSunday, 
 
       {showPicker && (
         <div className="cal-picker" ref={pickerRef}>
-          {STATUS_KEYS.map(key => (
+          {statusKeys.map(key => (
             <button
               key={key}
               className={`cal-picker-btn ${status === key ? 'active' : ''}`}
               style={{
-                background: STATUS_TYPES[key].color,
-                color: STATUS_TYPES[key].darkText ? '#1e293b' : '#fff',
+                background: statusTypes[key].color,
+                color: statusTypes[key].darkText ? '#1e293b' : '#fff',
                 fontSize: key.length > 1 ? '0.55rem' : '0.7rem',
               }}
               onClick={(e) => { e.stopPropagation(); handleSelect(key); }}
-              title={STATUS_TYPES[key].label}
+              title={statusTypes[key].label}
             >
               {key}
             </button>

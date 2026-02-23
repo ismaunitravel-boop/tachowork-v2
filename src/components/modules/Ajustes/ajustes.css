@@ -1,0 +1,473 @@
+/* ===========================
+   AJUSTES MODULE
+   =========================== */
+
+.ajustes-page {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* --- Nav sidebar --- */
+.ajustes-nav {
+  width: 280px;
+  min-width: 280px;
+  padding: 20px 16px;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+.ajustes-nav-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  padding: 0 8px 12px;
+}
+
+.ajustes-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  margin-bottom: 4px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.ajustes-nav-item:hover {
+  background: var(--bg-card-hover);
+}
+
+.ajustes-nav-item.active {
+  background: var(--bg-card-solid);
+  border-color: var(--border);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.08));
+}
+
+.ajustes-nav-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ajustes-nav-icon.icon-leyenda {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.ajustes-nav-icon.icon-calendario {
+  background: rgba(249, 115, 22, 0.1);
+  color: #f97316;
+}
+
+.ajustes-nav-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.ajustes-nav-desc {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* --- Content area --- */
+.ajustes-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 32px;
+}
+
+/* --- Section container --- */
+.ajustes-section {
+  max-width: 700px;
+}
+
+/* --- Section header --- */
+.ajustes-section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.ajustes-section-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ajustes-section-icon.icon-leyenda {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.ajustes-section-header h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.ajustes-section-header p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ===========================
+   LEYENDA - Color Grid
+   =========================== */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.color-card {
+  background: var(--bg-card-solid);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.color-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.color-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.color-card-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.color-input {
+  width: 100%;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 2px;
+  background: var(--bg);
+}
+
+.color-input::-webkit-color-swatch-wrapper {
+  padding: 2px;
+}
+
+.color-input::-webkit-color-swatch {
+  border: none;
+  border-radius: 5px;
+}
+
+.color-dark-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.color-dark-check input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.color-reset-row {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 8px;
+}
+
+/* ===========================
+   CALENDARIO - Toggles
+   =========================== */
+.ajustes-toggles-card {
+  background: var(--bg-card-solid);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 4px 20px;
+  margin-bottom: 28px;
+}
+
+.ajustes-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+}
+
+.ajustes-toggle-row.with-border {
+  border-bottom: 1px solid var(--border-light);
+}
+
+.ajustes-toggle-text {
+  flex: 1;
+}
+
+.ajustes-toggle-text strong {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.ajustes-toggle-text span {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Toggle switch */
+.toggle-switch {
+  position: relative;
+  width: 46px;
+  height: 26px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--text-muted);
+  border-radius: 26px;
+  transition: all 0.3s;
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  top: 3px;
+  left: 3px;
+  transition: all 0.3s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background: linear-gradient(135deg, #10b981, #34d399);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+}
+
+/* ===========================
+   CALENDARIO - Toolbar config
+   =========================== */
+.ajustes-toolbar-section {
+  margin-bottom: 20px;
+}
+
+.ajustes-toolbar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.ajustes-toolbar-icon {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+}
+
+.ajustes-toolbar-header h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.ajustes-toolbar-header p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.toolbar-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.toolbar-item-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  transition: all 0.15s;
+}
+
+.toolbar-item-row.is-visible {
+  background: var(--bg-card-solid);
+  border-color: var(--border);
+}
+
+.toolbar-item-grip {
+  color: var(--text-muted);
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  opacity: 0.5;
+}
+
+.toolbar-item-grip:hover {
+  opacity: 1;
+}
+
+/* Custom checkbox */
+.toolbar-item-check {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.toolbar-item-check input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toolbar-checkmark {
+  position: absolute;
+  top: 0; left: 0;
+  width: 22px;
+  height: 22px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.toolbar-item-check input:checked + .toolbar-checkmark {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.toolbar-item-check input:checked + .toolbar-checkmark::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.toolbar-item-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.toolbar-bulk-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.toolbar-bulk-actions .btn {
+  flex: 1;
+  justify-content: center;
+  font-size: 0.8rem;
+  padding: 8px;
+}
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+@media (max-width: 768px) {
+  .ajustes-page {
+    flex-direction: column;
+  }
+
+  .ajustes-nav {
+    width: 100%;
+    min-width: auto;
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 12px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .ajustes-nav-title {
+    display: none;
+  }
+
+  .ajustes-nav-item {
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+
+  .ajustes-nav-desc {
+    display: none;
+  }
+
+  .ajustes-content {
+    padding: 16px;
+  }
+
+  .color-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

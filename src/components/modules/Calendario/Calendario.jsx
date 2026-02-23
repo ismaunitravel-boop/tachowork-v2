@@ -1,9 +1,10 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { Search, Filter } from 'lucide-react';
+import { Search } from 'lucide-react';
 import Header from '../../layout/Header';
 import CalendarGrid from './CalendarGrid';
 import CalendarLegend from './CalendarLegend';
 import { useApp } from '../../../context/AppContext';
+import { useSettings } from '../../../context/SettingsContext';
 import useCalendar from '../../../hooks/useCalendar';
 import './calendario.css';
 
@@ -12,6 +13,7 @@ export default function Calendario() {
   const [year, setYear] = useState(currentYear);
   const [search, setSearch] = useState('');
   const { workers } = useApp();
+  const { settings } = useSettings();
   const { loading, error, getStatus, setStatus } = useCalendar(year);
   const gridRef = useRef(null);
 
@@ -30,12 +32,12 @@ export default function Calendario() {
     }
   }, []);
 
-  // Auto-scroll to today on load
+  // Auto-scroll to today on load (respects setting)
   useEffect(() => {
-    if (!loading && year === currentYear) {
+    if (!loading && year === currentYear && settings.calAutoScrollToday) {
       setTimeout(scrollToToday, 150);
     }
-  }, [loading, year, currentYear, scrollToToday]);
+  }, [loading, year, currentYear, scrollToToday, settings.calAutoScrollToday]);
 
   return (
     <>
@@ -44,10 +46,12 @@ export default function Calendario() {
       <div className="cal-page">
         {/* Toolbar */}
         <div className="cal-toolbar">
-          {/* Row 1: Legend */}
-          <div className="cal-toolbar-legend">
-            <CalendarLegend />
-          </div>
+          {/* Row 1: Legend (respects setting) */}
+          {settings.calShowLegend && (
+            <div className="cal-toolbar-legend">
+              <CalendarLegend />
+            </div>
+          )}
           {/* Row 2: Tools */}
           <div className="cal-toolbar-tools">
             <div className="cal-search">

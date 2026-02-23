@@ -1,9 +1,12 @@
-import { STATUS_TYPES } from '../../../utils/constants';
+import { useSettings } from '../../../context/SettingsContext';
 
 export default function CalendarLegend() {
+  const { getStatusTypes } = useSettings();
+  const statuses = getStatusTypes();
+
   return (
     <div className="cal-legend">
-      {Object.entries(STATUS_TYPES).map(([key, { label, color, darkText }]) => (
+      {Object.entries(statuses).map(([key, { label, color, darkText }]) => (
         <div key={key} className="cal-legend-item">
           <span
             className="cal-legend-dot"
