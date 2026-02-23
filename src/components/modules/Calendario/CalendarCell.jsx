@@ -3,7 +3,7 @@ import { STATUS_TYPES } from '../../../utils/constants';
 
 const STATUS_KEYS = Object.keys(STATUS_TYPES);
 
-export default function CalendarCell({ status, isWeekend, isToday, onChange }) {
+export default function CalendarCell({ status, isWeekend, isSaturday, isSunday, isToday, onChange }) {
   const [showPicker, setShowPicker] = useState(false);
   const cellRef = useRef(null);
   const pickerRef = useRef(null);
@@ -34,17 +34,28 @@ export default function CalendarCell({ status, isWeekend, isToday, onChange }) {
   };
 
   const statusInfo = status ? STATUS_TYPES[status] : null;
+  
+  const classes = [
+    'cal-cell',
+    isWeekend ? 'weekend' : '',
+    isSaturday ? 'saturday' : '',
+    isSunday ? 'sunday' : '',
+    isToday ? 'today' : '',
+    status ? 'has-status' : '',
+  ].filter(Boolean).join(' ');
 
   return (
     <td
       ref={cellRef}
-      className={`cal-cell ${isWeekend ? 'weekend' : ''} ${isToday ? 'today' : ''}`}
-      style={statusInfo ? { backgroundColor: statusInfo.color } : undefined}
+      className={classes}
       onClick={() => setShowPicker(!showPicker)}
     >
-      {status && (
-        <span className="cal-status-letter">{status}</span>
-      )}
+      <span
+        className="cal-status-letter"
+        style={statusInfo ? { background: statusInfo.color } : undefined}
+      >
+        {status || ''}
+      </span>
 
       {showPicker && (
         <div className="cal-picker" ref={pickerRef}>

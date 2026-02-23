@@ -12,13 +12,23 @@ function formatDate(year, month, day) {
   return `${year}-${m}-${d}`;
 }
 
-const CalendarGrid = forwardRef(function CalendarGrid({ year, workers, getStatus, setStatus }, ref) {
+const CalendarGrid = forwardRef(function CalendarGrid({ year, workers, getStatus, setStatus, search }, ref) {
   const today = useMemo(() => {
     const d = new Date();
     return formatDate(d.getFullYear(), d.getMonth(), d.getDate());
   }, []);
 
-  // Build all 12 months of day data
+  // Filter workers by search
+  const filtered = useMemo(() => {
+    if (!search) return workers;
+    const q = search.toLowerCase();
+    return workers.filter(w =>
+      w.nombre.toLowerCase().includes(q) ||
+      (w.numero || '').toString().includes(q)
+    );
+  }, [workers, search]);
+
+  // Build all 12 months
   const months = useMemo(() => {
     return Array.from({ length: 12 }, (_, m) => {
       const daysCount = getDaysInMonth(year, m);
@@ -31,6 +41,8 @@ const CalendarGrid = forwardRef(function CalendarGrid({ year, workers, getStatus
           dow,
           dowLabel: DIAS_SEMANA[dow],
           isWeekend: dow === 0 || dow === 6,
+          isSaturday: dow === 6,
+          isSunday: dow === 0,
           isToday: fecha === today,
           fecha,
         };
@@ -39,31 +51,33 @@ const CalendarGrid = forwardRef(function CalendarGrid({ year, workers, getStatus
     });
   }, [year, today]);
 
-  if (workers.length === 0) {
-    return <div className="cal-empty">No hay trabajadores activos</div>;
+  if (filtered.length === 0) {
+    return (
+      <div className="cal-empty">
+        {search ? 'No se encontraron conductores' : 'No hay trabajadores activos'}
+      </div>
+    );
   }
 
   return (
     <div className="cal-grid-wrap" ref={ref}>
       <table className="cal-grid">
-        {/* HEADER: 3 rows - Month names, Day numbers, Day-of-week */}
         <thead>
-          {/* Row 1: Month names */}
-          <tr className="cal-month-row">
-            <th className="cal-name-header cal-corner">Conductor</th>
+          {/* Row 1: Month names + "Conductor" (rowspan=2) */}
+          <tr>
+            <th className="cal-corner" rowSpan={2}>Conductor</th>
             {months.map(m => (
               <th
                 key={m.month}
-                className={`cal-month-header`}
+                className="cal-month-header"
                 colSpan={m.days.length}
               >
-                {m.name.toUpperCase()}
+                {m.name}
               </th>
             ))}
           </tr>
           {/* Row 2: Day numbers + dow */}
-          <tr className="cal-days-row">
-            <th className="cal-name-header cal-name-sub">&nbsp;</th>
+          <tr>
             {months.flatMap(m =>
               m.days.map(d => (
                 <th
@@ -78,25 +92,32 @@ const CalendarGrid = forwardRef(function CalendarGrid({ year, workers, getStatus
           </tr>
         </thead>
         <tbody>
-          {workers.map(w => (
-            <tr key={w.id}>
-              <td className="cal-name-cell">
-                <span className="cal-worker-num">{w.numero || '—'}</span>
-                <span className="cal-worker-name">{w.nombre}</span>
-              </td>
-              {months.flatMap(m =>
-                m.days.map(d => (
-                  <CalendarCell
-                    key={d.fecha}
-                    status={getStatus(w.id, d.fecha)}
-                    isWeekend={d.isWeekend}
-                    isToday={d.isToday}
-                    onChange={(estado) => setStatus(w.id, d.fecha, estado)}
-                  />
-                ))
-              )}
-            </tr>
-          ))}
+          {filtered.map(w => {
+            const displayName = w.numero
+              ? `${w.numero}. ${w.nombre}`
+              : w.nombre;
+
+            return (
+              <tr key={w.id}>
+                <td className="cal-name-cell" title={displayName}>
+                  <span className="cal-worker-name">{displayName}</span>
+                </td>
+                {months.flatMap(m =>
+                  m.days.map(d => (
+                    <CalendarCell
+                      key={d.fecha}
+                      status={getStatus(w.id, d.fecha)}
+                      isWeekend={d.isWeekend}
+                      isSaturday={d.isSaturday}
+                      isSunday={d.isSunday}
+                      isToday={d.isToday}
+                      onChange={(estado) => setStatus(w.id, d.fecha, estado)}
+                    />
+                  ))
+                )}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

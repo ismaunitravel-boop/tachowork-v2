@@ -60,15 +60,15 @@ export const MENU = [
   },
 ];
 
-// Calendar status types
+// Calendar status types - matching Control Laboral original
 export const STATUS_TYPES = {
-  T: { label: 'Trabajo', color: '#3b82f6', textColor: '#fff' },
-  D: { label: 'Descanso', color: '#10b981', textColor: '#fff' },
-  G: { label: 'Guardia', color: '#f59e0b', textColor: '#fff' },
-  V: { label: 'Vacaciones', color: '#8b5cf6', textColor: '#fff' },
-  P: { label: 'Permiso', color: '#ec4899', textColor: '#fff' },
-  B: { label: 'Baja', color: '#ef4444', textColor: '#fff' },
-  F: { label: 'Formación', color: '#06b6d4', textColor: '#fff' },
+  T: { label: 'Trabajo', color: '#3b82f6' },
+  D: { label: 'Descanso', color: '#10b981' },
+  G: { label: 'Guardia', color: '#f97316' },
+  V: { label: 'Vacaciones', color: '#f59e0b' },
+  P: { label: 'Permiso', color: '#8b5cf6' },
+  B: { label: 'Baja', color: '#ef4444' },
+  F: { label: 'Formación', color: '#06b6d4' },
 };
 
 // Worker types

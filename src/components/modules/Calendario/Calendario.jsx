@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { Search, Filter } from 'lucide-react';
 import Header from '../../layout/Header';
 import CalendarGrid from './CalendarGrid';
 import CalendarLegend from './CalendarLegend';
@@ -9,6 +10,7 @@ import './calendario.css';
 export default function Calendario() {
   const currentYear = new Date().getFullYear();
   const [year, setYear] = useState(currentYear);
+  const [search, setSearch] = useState('');
   const { workers } = useApp();
   const { loading, error, getStatus, setStatus } = useCalendar(year);
   const gridRef = useRef(null);
@@ -22,7 +24,7 @@ export default function Calendario() {
     const todayEl = gridRef.current.querySelector('.cal-day-header.today');
     if (todayEl) {
       const container = gridRef.current;
-      const nameColWidth = 160;
+      const nameColWidth = 180;
       const scrollLeft = todayEl.offsetLeft - nameColWidth - 100;
       container.scrollTo({ left: Math.max(0, scrollLeft), behavior: 'smooth' });
     }
@@ -31,7 +33,7 @@ export default function Calendario() {
   // Auto-scroll to today on load
   useEffect(() => {
     if (!loading && year === currentYear) {
-      setTimeout(scrollToToday, 100);
+      setTimeout(scrollToToday, 150);
     }
   }, [loading, year, currentYear, scrollToToday]);
 
@@ -42,11 +44,25 @@ export default function Calendario() {
       <div className="cal-page">
         {/* Toolbar */}
         <div className="cal-toolbar">
-          <div className="cal-toolbar-left">
-            <button className="btn btn-primary btn-today" onClick={scrollToToday}>
+          {/* Row 1: Legend */}
+          <div className="cal-toolbar-legend">
+            <CalendarLegend />
+          </div>
+          {/* Row 2: Tools */}
+          <div className="cal-toolbar-tools">
+            <div className="cal-search">
+              <Search size={16} />
+              <input
+                type="text"
+                placeholder="Buscar conductor..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+            </div>
+
+            <button className="btn-today" onClick={scrollToToday}>
               HOY
             </button>
-            <CalendarLegend />
           </div>
         </div>
 
@@ -65,6 +81,7 @@ export default function Calendario() {
             workers={activos}
             getStatus={getStatus}
             setStatus={setStatus}
+            search={search}
           />
         )}
       </div>
