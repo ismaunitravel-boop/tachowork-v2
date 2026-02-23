@@ -8,7 +8,7 @@ export default function CalendarCell({ status, isWeekend, isToday, onChange }) {
   const cellRef = useRef(null);
   const pickerRef = useRef(null);
 
-  // Close picker on outside click
+  // Close picker on outside click or ESC
   useEffect(() => {
     if (!showPicker) return;
     const handleClick = (e) => {
@@ -38,16 +38,12 @@ export default function CalendarCell({ status, isWeekend, isToday, onChange }) {
   return (
     <td
       ref={cellRef}
-      className={`cal-cell ${isWeekend ? 'weekend' : ''} ${isToday ? 'today' : ''} ${status ? 'has-status' : ''}`}
+      className={`cal-cell ${isWeekend ? 'weekend' : ''} ${isToday ? 'today' : ''}`}
+      style={statusInfo ? { backgroundColor: statusInfo.color } : undefined}
       onClick={() => setShowPicker(!showPicker)}
     >
       {status && (
-        <span
-          className="cal-status"
-          style={{ background: statusInfo?.color }}
-        >
-          {status}
-        </span>
+        <span className="cal-status-letter">{status}</span>
       )}
 
       {showPicker && (
