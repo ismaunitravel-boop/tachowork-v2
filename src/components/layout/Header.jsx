@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight, RefreshCw, Sun, Moon } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
+import ConnectionIndicator from './ConnectionIndicator';
 
 export default function Header({ title, year, onYearChange }) {
   const { loading, theme, toggleTheme } = useApp();
@@ -25,6 +26,7 @@ export default function Header({ title, year, onYearChange }) {
       )}
 
       <div className="header-right">
+        <ConnectionIndicator />
         {loading && <RefreshCw size={16} className="spin" />}
         <button
           className="theme-toggle"
