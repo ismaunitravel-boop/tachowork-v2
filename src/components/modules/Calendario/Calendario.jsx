@@ -33,7 +33,7 @@ export default function Calendario() {
     const s = localStorage.getItem('tw-zoomH'); return s ? parseInt(s) : 100;
   });
   const [zoomV, setZoomV] = useState(() => {
-    const s = localStorage.getItem('tw-zoomV'); return s ? parseInt(s) : 100;
+    const s = localStorage.getItem('tw-zoomV'); return s ? parseInt(s) : 80;
   });
   const [filterOpen, setFilterOpen] = useState(false);
   const [hiddenWorkers, setHiddenWorkers] = useState(() => {
@@ -63,7 +63,7 @@ export default function Calendario() {
     else setZoomV(z => Math.max(50, Math.min(200, z + delta)));
   };
 
-  const resetZoom = () => { setZoomH(100); setZoomV(100); };
+  const resetZoom = () => { setZoomH(100); setZoomV(80); };
 
   // Scroll to today
   const scrollToToday = useCallback(() => {
