@@ -369,6 +369,8 @@
   border: 1px solid var(--border);
   text-align: center;
   vertical-align: middle;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* ===========================
@@ -388,7 +390,7 @@
 .cal-month-header {
   padding: 0.65rem 0.5rem;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: var(--zoom-month-font, 0.9rem);
   color: var(--primary-text);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -404,8 +406,8 @@
   z-index: 40 !important;
   position: sticky;
   left: 0;
-  min-width: 180px;
-  max-width: 180px;
+  min-width: var(--zoom-name-w, 180px);
+  max-width: var(--zoom-name-w, 180px);
   padding: 0.2rem 0.5rem;
   text-align: left;
   font-weight: 600;
@@ -417,9 +419,9 @@
 .cal-day-header {
   background: var(--table-header-bg);
   padding: 0.45rem 0.2rem;
-  font-size: 0.7rem;
+  font-size: var(--zoom-header-font, 0.7rem);
   color: var(--text-muted);
-  min-width: 32px;
+  min-width: var(--zoom-day-w, 32px);
   user-select: none;
 }
 
@@ -468,15 +470,17 @@
   position: sticky;
   left: 0;
   z-index: 15;
-  padding: 0.2rem 0.5rem;
+  padding: 0 0.5rem;
   text-align: left;
-  min-width: 180px;
-  max-width: 180px;
+  min-width: var(--zoom-name-w, 180px);
+  max-width: var(--zoom-name-w, 180px);
   font-weight: 500;
-  height: 36px;
+  height: var(--zoom-name-h, 40px);
+  max-height: var(--zoom-name-h, 40px);
   overflow: hidden;
   white-space: nowrap;
   border-right: 1px solid var(--border);
+  line-height: var(--zoom-name-h, 40px);
 }
 
 .cal-worker-name {
@@ -484,14 +488,22 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.85rem;
+  font-size: var(--zoom-font, 0.85rem);
   color: var(--text);
-  line-height: 32px;
+  line-height: var(--zoom-row-h, 32px);
 }
 
 /* ===========================
    CROSSHAIR - Focus-based
    =========================== */
+
+/* Enforce row height from zoom */
+.cal-grid tbody tr {
+  height: var(--zoom-name-h, 40px);
+  max-height: var(--zoom-name-h, 40px);
+  line-height: 0;
+}
+
 .cal-grid tbody tr.row-highlighted {
   background: rgba(59, 130, 246, 0.06) !important;
 }
@@ -531,11 +543,13 @@
    DAY CELLS
    =========================== */
 .cal-cell {
-  padding: 0;
-  min-width: 32px;
-  height: 36px;
-  min-height: 36px;
+  padding: 0 !important;
+  min-width: var(--zoom-day-w, 32px);
+  width: var(--zoom-day-w, 32px);
+  height: var(--zoom-row-h, 36px);
+  max-height: var(--zoom-row-h, 36px);
   position: relative;
+  line-height: 0;
 }
 
 .cal-cell.weekend {
@@ -578,12 +592,14 @@
    CELL INPUT (the key interaction)
    =========================== */
 .cal-input {
-  width: 100%;
-  height: 100%;
+  width: var(--zoom-day-w, 32px);
+  height: var(--zoom-row-h, 36px);
+  min-height: 0;
+  min-width: 0;
   border: none;
   background: transparent;
   text-align: center;
-  font-size: 0.85rem;
+  font-size: var(--zoom-font, 0.85rem);
   font-weight: 700;
   color: white;
   text-transform: uppercase;
@@ -594,6 +610,11 @@
   caret-color: transparent;
   outline: none;
   transition: outline 0.1s;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  box-sizing: border-box;
+  display: block;
 }
 
 .cal-input:focus {

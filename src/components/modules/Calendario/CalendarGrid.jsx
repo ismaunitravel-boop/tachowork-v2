@@ -152,9 +152,10 @@ const CalendarGrid = forwardRef(function CalendarGrid({
     const dayW = Math.round(32 * (zoomH / 100));
     const rowH = Math.round(36 * (zoomV / 100));
     const nameW = Math.round(180 * (zoomH / 100));
+    const nameH = Math.round(40 * (zoomV / 100));
     const fontSize = 0.85 * (Math.min(zoomH, zoomV) / 100);
     const headerFontSize = 0.7 * (zoomH / 100);
-    return { dayW, rowH, nameW, fontSize, headerFontSize };
+    return { dayW, rowH, nameW, nameH, fontSize, headerFontSize };
   }, [zoomH, zoomV]);
 
   if (filtered.length === 0) {
@@ -169,18 +170,27 @@ const CalendarGrid = forwardRef(function CalendarGrid({
 
   return (
     <div className="cal-grid-wrap" ref={ref}>
-      <table className="cal-grid" ref={tableRef} onBlur={handleTableBlur}>
+      <table className="cal-grid" ref={tableRef} onBlur={handleTableBlur}
+        style={{
+          '--zoom-day-w': dayW + 'px',
+          '--zoom-row-h': rowH + 'px',
+          '--zoom-name-w': nameW + 'px',
+          '--zoom-font': fontSize + 'rem',
+          '--zoom-header-font': headerFontSize + 'rem',
+          '--zoom-name-h': Math.round(40 * (zoomV / 100)) + 'px',
+          '--zoom-month-font': (0.9 * (zoomH / 100)) + 'rem',
+        }}
+      >
         <thead>
           {/* Row 1: Month names */}
           <tr>
-            <th className="cal-corner" rowSpan={2} style={{ minWidth: nameW, maxWidth: nameW }}>
+            <th className="cal-corner" rowSpan={2}>
               Conductor
             </th>
             {monthGroups.map(m => {
               const label = m.year !== year ? `${m.name} ${m.year}` : m.name;
               return (
-                <th key={m.key} className="cal-month-header" colSpan={m.days.length}
-                  style={{ fontSize: (0.9 * (zoomH / 100)) + 'rem' }}>
+                <th key={m.key} className="cal-month-header" colSpan={m.days.length}>
                   {label}
                 </th>
               );
@@ -192,7 +202,6 @@ const CalendarGrid = forwardRef(function CalendarGrid({
               <th key={d.fecha}
                 className={`cal-day-header ${d.isWeekend ? 'weekend' : ''} ${d.isToday ? 'today' : ''}`}
                 data-col-index={i}
-                style={{ minWidth: dayW, fontSize: headerFontSize + 'rem' }}
               >
                 <span className="cal-day-num">{d.day}</span>
                 <span className="cal-day-dow">{d.dowLabel}</span>
@@ -205,10 +214,7 @@ const CalendarGrid = forwardRef(function CalendarGrid({
             const displayName = getDisplayName(w);
             return (
               <tr key={w.id}>
-                <td className="cal-name-cell"
-                  title={displayName}
-                  style={{ minWidth: nameW, maxWidth: nameW, height: Math.round(40 * (zoomV / 100)) }}
-                >
+                <td className="cal-name-cell" title={displayName}>
                   <span className="cal-worker-name">{displayName}</span>
                 </td>
                 {allDays.map((d, i) => (
