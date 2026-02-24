@@ -161,7 +161,9 @@ const CalendarGrid = forwardRef(function CalendarGrid({
     const nameH = Math.round(40 * (zoomV / 100));
     const fontSize = 0.85 * (Math.min(zoomH, zoomV) / 100);
     const headerFontSize = 0.7 * (zoomH / 100);
-    return { dayW, rowH, nameW, nameH, fontSize, headerFontSize };
+    // Name font: fixed at 110% equivalent, never scales with zoom
+    const nameFontSize = 0.935;
+    return { dayW, rowH, nameW, nameH, fontSize, headerFontSize, nameFontSize };
   }, [zoomH, zoomV]);
 
   if (filtered.length === 0) {
@@ -185,6 +187,7 @@ const CalendarGrid = forwardRef(function CalendarGrid({
           '--zoom-header-font': headerFontSize + 'rem',
           '--zoom-name-h': Math.round(40 * (zoomV / 100)) + 'px',
           '--zoom-month-font': (0.9 * (zoomH / 100)) + 'rem',
+          '--zoom-name-font': nameFontSize + 'rem',
         }}
       >
         <thead>

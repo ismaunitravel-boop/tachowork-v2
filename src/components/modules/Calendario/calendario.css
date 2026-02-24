@@ -488,9 +488,9 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: var(--zoom-font, 0.85rem);
+  font-size: var(--zoom-name-font, 0.935rem);
   color: var(--text);
-  line-height: var(--zoom-row-h, 32px);
+  line-height: var(--zoom-name-h, 40px);
 }
 
 /* ===========================
