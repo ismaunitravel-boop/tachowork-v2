@@ -597,7 +597,7 @@
   border: none;
   background: transparent;
   text-align: center;
-  font-size: var(--zoom-font, 0.85rem);
+  font-size: 0.85rem; /* FIXED — never scales with zoom */
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;

@@ -74,7 +74,7 @@ export default function CalendarCell({
         style={statusInfo ? {
           background: statusInfo.color,
           color: statusInfo.darkText ? '#1e293b' : '#fff',
-          fontSize: status && status.length > 1 ? '0.55rem' : undefined,
+          fontSize: status && status.length > 1 ? '0.7rem' : undefined,
         } : undefined}
         onKeyDown={handleKeyDown}
       >

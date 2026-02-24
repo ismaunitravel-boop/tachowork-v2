@@ -159,11 +159,10 @@ const CalendarGrid = forwardRef(function CalendarGrid({
     const rowH = Math.round(36 * (zoomV / 100));
     const nameW = Math.round(180 * (zoomH / 100));
     const nameH = Math.round(40 * (zoomV / 100));
-    const fontSize = 0.85 * (Math.min(zoomH, zoomV) / 100);
     const headerFontSize = 0.7 * (zoomH / 100);
     // Name font: fixed at 110% equivalent, never scales with zoom
     const nameFontSize = 0.935;
-    return { dayW, rowH, nameW, nameH, fontSize, headerFontSize, nameFontSize };
+    return { dayW, rowH, nameW, nameH, headerFontSize, nameFontSize };
   }, [zoomH, zoomV]);
 
   if (filtered.length === 0) {
@@ -174,7 +173,7 @@ const CalendarGrid = forwardRef(function CalendarGrid({
     );
   }
 
-  const { dayW, rowH, nameW, nameH, fontSize, headerFontSize, nameFontSize } = zoomStyles;
+  const { dayW, rowH, nameW, nameH, headerFontSize, nameFontSize } = zoomStyles;
 
   return (
     <div className="cal-grid-wrap" ref={ref}>
@@ -183,7 +182,6 @@ const CalendarGrid = forwardRef(function CalendarGrid({
           '--zoom-day-w': dayW + 'px',
           '--zoom-row-h': rowH + 'px',
           '--zoom-name-w': nameW + 'px',
-          '--zoom-font': fontSize + 'rem',
           '--zoom-header-font': headerFontSize + 'rem',
           '--zoom-name-h': Math.round(40 * (zoomV / 100)) + 'px',
           '--zoom-month-font': (0.9 * (zoomH / 100)) + 'rem',
