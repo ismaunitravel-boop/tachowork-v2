@@ -174,7 +174,7 @@ const CalendarGrid = forwardRef(function CalendarGrid({
     );
   }
 
-  const { dayW, rowH, nameW, fontSize, headerFontSize } = zoomStyles;
+  const { dayW, rowH, nameW, nameH, fontSize, headerFontSize, nameFontSize } = zoomStyles;
 
   return (
     <div className="cal-grid-wrap" ref={ref}>
