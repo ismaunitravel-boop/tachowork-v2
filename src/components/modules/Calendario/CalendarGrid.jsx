@@ -128,8 +128,11 @@ const CalendarGrid = forwardRef(function CalendarGrid({
     return w.numero ? `${w.numero}. ${w.nombre}` : w.nombre;
   }, [displayMode]);
 
-  // Crosshair
-  const handleCellFocus = useCallback((colIndex, inputEl) => {
+  // Crosshair via event delegation on table
+  const handleTableFocus = useCallback((e) => {
+    const input = e.target.closest('.cal-input');
+    if (!input) return;
+
     const table = tableRef.current;
     if (!table) return;
 
@@ -138,13 +141,16 @@ const CalendarGrid = forwardRef(function CalendarGrid({
     table.querySelectorAll('.col-highlighted').forEach(el => el.classList.remove('col-highlighted'));
 
     // Highlight row
-    const row = inputEl.closest('tr');
+    const row = input.closest('tr');
     if (row) row.classList.add('row-highlighted');
 
-    // Highlight column header + all cells in column
-    table.querySelectorAll(`[data-col-index="${colIndex}"]`).forEach(el => {
-      el.classList.add('col-highlighted');
-    });
+    // Highlight column
+    const colIndex = input.dataset.colIndex;
+    if (colIndex !== undefined) {
+      table.querySelectorAll(`[data-col-index="${colIndex}"]`).forEach(el => {
+        el.classList.add('col-highlighted');
+      });
+    }
   }, []);
 
   // Zoom styles
@@ -170,7 +176,7 @@ const CalendarGrid = forwardRef(function CalendarGrid({
 
   return (
     <div className="cal-grid-wrap" ref={ref}>
-      <table className="cal-grid" ref={tableRef} onBlur={handleTableBlur}
+      <table className="cal-grid" ref={tableRef} onFocus={handleTableFocus} onBlur={handleTableBlur}
         style={{
           '--zoom-day-w': dayW + 'px',
           '--zoom-row-h': rowH + 'px',
@@ -229,7 +235,6 @@ const CalendarGrid = forwardRef(function CalendarGrid({
                     workerId={w.id}
                     fecha={d.fecha}
                     colIndex={i}
-                    onFocus={handleCellFocus}
                     autoAdvance={autoAdvance}
                   />
                 ))}

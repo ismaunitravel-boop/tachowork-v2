@@ -1,4 +1,4 @@
-import { useRef, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useSettings } from '../../../context/SettingsContext';
 
 // Valid statuses user can type (P, B, V come from other tabs)
@@ -6,9 +6,8 @@ const TYPEABLE = new Set(['T', 'D', 'G']);
 
 export default function CalendarCell({
   status, isWeekend, isSaturday, isSunday, isToday,
-  onChange, workerId, fecha, colIndex, onFocus, autoAdvance,
+  onChange, workerId, fecha, colIndex, autoAdvance,
 }) {
-  const inputRef = useRef(null);
   const { getStatusTypes } = useSettings();
   const statusTypes = useMemo(() => getStatusTypes(), [getStatusTypes]);
   const statusInfo = status ? statusTypes[status] : null;
@@ -22,13 +21,12 @@ export default function CalendarCell({
     status ? 'has-status' : '',
   ].filter(Boolean).join(' ');
 
-  // Handle keydown: arrow nav + validation
   const handleKeyDown = useCallback((e) => {
     // Arrow keys → navigate
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
       e.preventDefault();
       const table = e.target.closest('table');
-      if (table) navigateFromCell(table, e.target, e.key, autoAdvance);
+      if (table) navigateFromCell(table, e.target, e.key);
       return;
     }
 
@@ -36,7 +34,7 @@ export default function CalendarCell({
     if (e.key === 'Tab') {
       e.preventDefault();
       const table = e.target.closest('table');
-      if (table) navigateFromCell(table, e.target, e.shiftKey ? 'ArrowLeft' : 'ArrowRight', autoAdvance);
+      if (table) navigateFromCell(table, e.target, e.shiftKey ? 'ArrowLeft' : 'ArrowRight');
       return;
     }
 
@@ -53,11 +51,10 @@ export default function CalendarCell({
       e.preventDefault();
       if (TYPEABLE.has(key)) {
         onChange(key === status ? null : key);
-        // Auto-advance after typing
         if (autoAdvance) {
           setTimeout(() => {
             const table = e.target.closest('table');
-            if (table) navigateFromCell(table, e.target, 'ArrowRight', true);
+            if (table) navigateFromCell(table, e.target, 'ArrowRight');
           }, 30);
         }
       }
@@ -65,42 +62,35 @@ export default function CalendarCell({
     }
   }, [status, onChange, autoAdvance]);
 
-  // Handle focus → crosshair
-  const handleFocus = useCallback((e) => {
-    if (onFocus) onFocus(colIndex, e.target);
-  }, [colIndex, onFocus]);
-
   return (
     <td className={classes} data-col-index={colIndex}>
-      <input
-        ref={inputRef}
-        type="text"
+      <div
         className="cal-input"
-        readOnly
-        value={status || ''}
+        tabIndex={0}
+        role="gridcell"
         data-worker={workerId}
         data-fecha={fecha}
         data-col-index={colIndex}
         style={statusInfo ? {
           background: statusInfo.color,
           color: statusInfo.darkText ? '#1e293b' : '#fff',
-          fontSize: status && status.length > 1 ? '0.65rem' : undefined,
+          fontSize: status && status.length > 1 ? '0.55rem' : undefined,
         } : undefined}
         onKeyDown={handleKeyDown}
-        onFocus={handleFocus}
-        tabIndex={0}
-      />
+      >
+        {status || ''}
+      </div>
     </td>
   );
 }
 
-// Navigate to next editable cell, skipping locked ones
-function navigateFromCell(table, currentInput, direction) {
+// Navigate to next cell
+function navigateFromCell(table, current, direction) {
   const rows = Array.from(table.querySelectorAll('tbody tr'));
-  const currentRow = currentInput.closest('tr');
+  const currentRow = current.closest('tr');
   const rowIdx = rows.indexOf(currentRow);
   const cells = Array.from(currentRow.querySelectorAll('.cal-input'));
-  let cellIdx = cells.indexOf(currentInput);
+  let cellIdx = cells.indexOf(current);
 
   let r = rowIdx;
   let c = cellIdx;
@@ -144,7 +134,6 @@ function navigateFromCell(table, currentInput, direction) {
       return;
     }
 
-    // For vertical, keep trying same direction
     if (direction === 'ArrowUp' || direction === 'ArrowDown') {
       c = ci;
     }
